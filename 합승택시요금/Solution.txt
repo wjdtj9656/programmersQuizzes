@@ -1,0 +1,20 @@
+function solution(n, s, a, b, fares) {
+    var answer = Infinity;
+    const arr = Array.from(Array(n),()=>{return new Array(n).fill(Infinity)});
+    fares.forEach(([from,to,fee]) => {
+        arr[from-1][to-1] = fee;
+        arr[to-1][from-1] = fee;
+    })
+    for(let k=0; k<n; k++){
+        for(let i=0; i<n; i++){
+            for(let j=0; j<n; j++){
+                if(i==j) arr[i][j] = 0;
+                else arr[i][j] = Math.min(arr[i][k] + arr[k][j],arr[i][j]);
+            }
+        }
+    }
+    for(let i=0; i<n; i++){
+        answer = Math.min(answer,arr[s-1][i] + arr[i][a-1] + arr[i][b-1]);
+    }
+    return answer;
+}
