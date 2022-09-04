@@ -1,0 +1,21 @@
+function solution(relation) {
+    let len = relation[0].length;
+    
+    let max = 1 << len;
+    let answer = new Set();
+    
+    for(let i= 1; i< max; i++){
+        let temp = relation.map((cur)=> cur.filter((_,index) => i & (1 << index)).join(""));
+        const filterArr = new Set(temp);
+        if(temp.length === filterArr.size){
+            answer.add(i);
+        }
+    }
+    for(let x of answer){
+        for(let y of answer){
+            if( x>= y)continue;
+            if((x & y) === x) answer.delete(y);
+        }
+    }
+    return [...answer].length;
+}
