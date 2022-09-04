@@ -1,0 +1,45 @@
+function solution(info, query) {
+    let answer =[];
+    let map ={};
+    function combination(map, infos, score, start){
+        const key = infos.join("");
+        if(map[key]) map[key].push(score)
+        else map[key] = [score];
+        for(let i=start; i<infos.length; i++){
+            let tempArr = [...infos];
+            tempArr[i] = '-';
+            combination(map, tempArr, score, i+1);
+        }
+    }
+    function binarySearch(map, key, score){
+        let scoreArr = map[key];
+        
+        if(scoreArr){
+            let start = 0;
+            let end = scoreArr.length;
+            while(start < end){
+                let mid = Math.floor((start+end)/2);
+                if(scoreArr[mid] >= score) end = mid;
+                else start = mid+1;
+            }
+                    return scoreArr.length - start;
+        }
+        else return 0;
+    };
+    
+    for(let i=0; i<info.length; i++){
+        let infos = info[i].split(" ");
+        let score = infos.pop();
+        combination(map,infos,score,0);
+    }
+    for(let key in map){
+        map[key].sort((a,b)=>a-b);
+    }
+    for(let i=0; i<query.length; i++){
+        let querys = query[i].replace(/ and /g,'').split(" ");
+        let score = Number(querys.pop());
+        
+        answer.push(binarySearch(map, querys.join(""),score));
+    }
+    return answer;
+}
