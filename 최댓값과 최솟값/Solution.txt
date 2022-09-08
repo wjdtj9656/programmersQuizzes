@@ -1,0 +1,10 @@
+function solution(s) {
+    var answer = '';
+    let max = -987654321;
+    let min = 987654321;
+    const arr = s.split(" ").forEach((num)=>{
+        max = Math.max(num,max);
+        min = Math.min(num,min);
+    })
+    return min+" "+max;
+}
