@@ -1,0 +1,15 @@
+function solution(s) {
+    var answer = '';
+    let regex = /[0]/g
+    let zeroNum = 0;
+    let changeNum = 0;
+    while(s !== "1"){
+        if(s.match(regex))
+        zeroNum += s.match(regex).length;
+        s = s.replaceAll(regex,"");
+        s = s.length;
+        s = s.toString(2);
+        changeNum++;
+    }
+    return [changeNum,zeroNum];
+}
