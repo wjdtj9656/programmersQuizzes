@@ -1,0 +1,13 @@
+function solution(s){
+    let value = 0;
+    s = s.split('');
+    for(let i=0; i<s.length; i++){
+        if(s[i] == '(') value++;
+        else value--;
+        if(value < 0) return false;
+        if(value > s.length - (i)) return false;
+    }
+    if(value !== 0) return false;
+
+    return true;
+}
