@@ -1,0 +1,10 @@
+function solution(arr) {
+    var answer = 0;
+    for(let i=0; i<987654321; i++){
+        let answer = 0;
+        for(let j of arr){
+            if(i > j && i%j == 0) answer++;
+        }
+        if(answer === arr.length) return i;
+    }
+}
