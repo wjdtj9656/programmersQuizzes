@@ -1,0 +1,26 @@
+function solution(cacheSize, cities) {
+    var answer = 0;
+    let set = new Set();
+    if(cacheSize == 0) return cities.length*5;
+        for(let i=0; i<cities.length; i++){
+            let nowValue = cities[i].toLowerCase();
+                if(set.has(nowValue)){
+                    answer+=1;
+                    set.delete(nowValue);
+                    set.add(nowValue);
+                }
+                else{
+                    if(set.size < cacheSize){
+                        set.add(nowValue);
+                        answer+=5;
+                        continue;
+                    }
+                    answer+=5;
+                    const iterator = set.values();
+                    set.delete(iterator.next().value);
+                    set.add(nowValue);
+                
+            }
+        }
+    return answer;
+}
