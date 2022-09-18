@@ -1,0 +1,10 @@
+function solution(n) {
+    var answer = 0;
+    let oneNum = n.toString(2).split('1');
+    console.log(oneNum);
+    for(let i=n+1; i<=1000000; i++){
+        if(i.toString(2).split('1').length == oneNum.length){
+            return i;
+        }
+    }
+}
