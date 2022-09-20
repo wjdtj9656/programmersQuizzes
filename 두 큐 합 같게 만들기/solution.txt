@@ -1,0 +1,28 @@
+function solution(queue1, queue2) {
+    let sum = 0;
+    let q1Sum = 0;
+    let q2Sum = 0;
+    let q = [...queue1, ...queue2];
+    for(let num of queue1){
+        q1Sum += num;
+    }
+    for(let num of queue2){
+        q2Sum += num;
+    }
+    sum = (q1Sum + q2Sum)/2;
+    let cnt = 0;
+    let size = (queue1.length)*4;
+    let start = 0;
+    let end = queue1.length - 1;
+    while(cnt++ < size){
+        if(!q1Sum) return -1;
+        if(q1Sum < sum){
+            q1Sum += q[++end];
+        }
+        else if(q1Sum > sum){
+            q1Sum -= q[start++];
+        }
+        else return cnt-1;
+    }
+    return -1;
+}
