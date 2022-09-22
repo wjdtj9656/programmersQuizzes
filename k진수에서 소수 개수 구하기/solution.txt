@@ -1,0 +1,14 @@
+function check(num){
+    if(Math.sqrt(num) % 1 == 0){
+        return false;
+    }
+    for(let i=2; i<Math.sqrt(num); i++){
+        if(num % i ==0) return false;
+    }
+    return true;
+}
+function solution(n, k) {
+    var answer = -1;
+    let value = n.toString(k).split('0').filter((item)=>item !== '1'&&item !== '' && check(Number(item)));
+    return value.length;
+}
