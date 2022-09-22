@@ -1,0 +1,21 @@
+function solution(operations) {
+    var answer = [];
+    for(let i=0; i<operations.length; i++){
+        let temp = operations[i].split(" ");
+        answer.sort((a,b)=>a-b);
+        if(temp[0] == 'I'){
+            answer.push(parseInt(temp[1]));
+        }
+        else{
+            if(temp[1] == -1){
+                answer.shift();
+            }
+            else{
+                answer.pop();
+            }
+        }
+    }
+    answer.sort((a,b)=>a-b);
+    if(answer.length === 0) return [0,0];
+    return [answer[answer.length-1],answer[0]];
+}
