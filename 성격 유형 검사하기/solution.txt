@@ -1,0 +1,27 @@
+function solution(survey, choices) {
+    var answer = '';
+    let map = new Map();
+    map.set("A",0);
+    map.set("N",0);
+    map.set("C",0);
+    map.set("F",0);
+    map.set("M",0);
+    map.set("J",0);
+    map.set("R",0);
+    map.set("T",0);
+    for(let i=0; i<choices.length; i++){
+        if(choices[i] > 4){
+            let ch = survey[i][1];
+            map.set(ch,map.get(ch)+ (choices[i]-4));
+        }
+        else if(choices[i] <4){
+            let ch = survey[i][0];
+            map.set(ch,map.get(ch)+ (4 - choices[i]));
+        }
+    }
+    answer += map.get("R") >= map.get("T")? "R":"T";
+    answer += map.get("C") >= map.get("F")? "C":"F";
+    answer += map.get("J") >= map.get("M")? "J":"M";
+    answer += map.get("A") >= map.get("N")? "A":"N";
+    return answer;
+}
