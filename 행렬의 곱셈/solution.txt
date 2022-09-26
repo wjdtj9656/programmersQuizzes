@@ -1,0 +1,14 @@
+function solution(arr1, arr2) {
+    let size1 = arr1.length;
+    let size2 = arr2[0].length;
+    let answer = Array.from(Array(size1), ()=>new Array(size2).fill(0));
+    for(let i=0; i<size1; i++){
+        for(let j=0; j<size2; j++){
+            for(let a=0; a<arr1[i].length; a++){
+                answer[i][j] += (arr1[i][a] * arr2[a][j]);
+                // answer[i][j] = 1;
+            }
+        }
+    }
+    return answer;
+}
