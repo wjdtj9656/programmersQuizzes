@@ -1,0 +1,42 @@
+function solution(fees, records) {
+    let info = new Map();
+    for(let record of records){
+        let detail = record.split(' ');
+        let hour = Number(detail[0].slice(0,2));
+        let min = Number(detail[0].slice(3,5));
+        let sum = hour*60 + min;
+        if(detail[2] === 'IN'){
+            if(info.get(detail[1])){
+            let num = info.get(detail[1]) - sum;
+            info.set(detail[1],num);
+            }
+            else info.set(detail[1],-sum);
+        }
+        else{
+            let num = info.get(detail[1]) + sum;
+            info.set(detail[1],num);
+        }
+    }
+    for(let [carNum,fee] of [...info]){
+        
+        if(fee <= 0){
+            info.set(carNum,fee + (23*60+59));
+        }
+        let nowFee = info.get(carNum);
+        if(nowFee <= fees[0]) info.set(carNum,fees[1]);
+        else{
+            nowFee -= fees[0];
+            nowFee /= fees[2];
+            nowFee = Math.ceil(nowFee)*fees[3]+fees[1];
+            info.set(carNum,nowFee);
+        }
+    }
+    let answer = [...info].sort((a,b)=>{
+        return (Number(a[0]) - Number(b[0]));
+    })
+    let result =[];
+    for(let i of answer){
+        result.push(i[1])
+    }
+    return result;
+}
