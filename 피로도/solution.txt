@@ -1,0 +1,33 @@
+let visit = [];
+function solution(k, dungeons) {
+    var answer = 0;
+    let permuNum = [];
+    
+    const permu = (arr,index,now)=>{
+        if(arr.length == index){
+            permuNum.push(now);
+            return;
+        }
+        for(let i=0; i<arr.length; i++){
+            if(!visit[i]){
+            visit[i] = true;
+            permu(arr,now.length+1,[...now,i]);
+            visit[i] = false;
+            }
+        }
+    }
+    permu(dungeons,0,[]);
+    for(let arr of permuNum){
+        let temp = 0;
+        let energy = k;
+        for(let i of arr){
+            let [least,need] = dungeons[i];
+            if(least <= energy){
+                energy -= need;
+                temp++;
+            }
+            answer = Math.max(temp,answer);
+        }
+    }
+    return answer;
+}
