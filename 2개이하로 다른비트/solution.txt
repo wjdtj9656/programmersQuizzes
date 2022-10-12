@@ -1,0 +1,27 @@
+function solution(numbers) {
+    var answer = [];
+    for(let i of numbers){
+        let now = i.toString(2).split('');
+        if(now.includes('0')){
+            for(let j=now.length-1; j>=0; j--){
+                if(now[j] === '0'){
+                    if(j === now.length-1){
+                        now[j] ='1';
+                        break;
+                    }
+                    else{
+                        now[j] ='1';
+                        now[j+1] = '0';
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            now.unshift('1');
+            now[1] ='0';
+        }
+        answer.push((parseInt(now.join(''),2)))
+    }
+    return answer;
+}
