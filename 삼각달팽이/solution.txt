@@ -1,0 +1,14 @@
+function solution(n) {
+    let answer = Array.from(Array(n),(_,index)=>new Array(index+1));
+    let count = 0;
+    let x = -1;
+    let y = 0;
+    while (n > 0) {
+      for (let i = 0; i < n; i++) answer[++x][y] = ++count; // 아래로 이동합니다.
+      for (let i = 0; i < n - 1; i++) answer[x][++y] = ++count; // 오른쪽으로 이동합니다.
+      for (let i = 0; i < n - 2; i++) answer[--x][--y] = ++count; // 대각선 오른쪽 위로 이동합니다.
+          
+      n -= 3;
+  }
+  return answer.flatMap(e => e);
+}
