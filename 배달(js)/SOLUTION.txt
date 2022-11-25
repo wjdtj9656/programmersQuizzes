@@ -1,0 +1,20 @@
+function solution(N, road, K) {
+    var answer = 1;
+    let distance = Array.from(Array(N),()=>new Array(N).fill(10e9));
+    for(let i=0; i<road.length; i++){
+        let [start,end, dis] = road[i];
+        distance[start-1][end-1] = Math.min(dis,distance[start-1][end-1]);
+        distance[end-1][start-1] = Math.min(dis,distance[end-1][start-1]);
+    }
+    for(let k=0; k<N; k++){
+        for(let i=0; i<N; i++){
+            for(let j=0; j<N; j++){
+                distance[i][j] = Math.min(distance[i][j],distance[i][k] + distance[k][j]);
+            }
+        }
+    }
+    for(let i=1; i<N; i++){
+        if(distance[0][i] <= K) answer++;
+    }
+    return answer
+}
