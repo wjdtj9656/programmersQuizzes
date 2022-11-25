@@ -1,0 +1,33 @@
+function solution(n, paths, gates, summits) {
+    const graph = Array.from(Array(n+1),()=>new Array());
+    for(let [start,end,value] of paths){
+        graph[start].push([end,value]);
+        graph[end].push([start,value]);
+    }
+    for(let summit of summits){
+        graph[summit] = [];
+    }
+    let q = gates;
+    let intensity = new Array(n+1).fill(Infinity);
+    // gates.forEach((val)=>intensity[val] = -1);
+    gates.forEach(v=>intensity[v]=-1);
+    while(q.length !== 0){
+        let set = new Set();
+        while(q.length !== 0){
+            let now = q.pop();
+            for(let [end,value] of graph[now]){
+                let max = Math.max(intensity[now],value);
+                if(intensity[end] > max){
+                    intensity[end] = max;
+                    set.add(end);
+                }
+            }
+        }
+        q = [...set];
+    }
+    const answer = summits.map(val=>[val,intensity[val]]).sort((a,b)=>{
+        if(a[1] === b[1]) return a[0] - b[0];
+        return a[1] - b[1];
+    })
+    return answer[0];
+}
