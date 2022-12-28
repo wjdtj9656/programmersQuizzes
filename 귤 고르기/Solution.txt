@@ -1,0 +1,21 @@
+function solution(k, tangerine) {
+    let answer = 0;
+    const map = new Map();
+    
+    //데이터 맵으로 넣기
+    for(let num of tangerine){
+        if(map.has(num)) map.set(num,map.get(num)+1);
+        else map.set(num,1);
+    }
+    //맵 배열로 넣고 정렬
+    const arr = [...map];
+    arr.sort((a,b)=>b[1]-a[1]);
+    
+    //k가 0이하 될때까지 빼줌
+    for(let [fruitNum,num] of arr){
+        k -= num;
+        answer++;
+        if(k<=0) break;
+    }
+    return answer;
+}
