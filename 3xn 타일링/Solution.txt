@@ -1,0 +1,23 @@
+
+function solution (n) {
+  const MOD = 1000000007;
+  const dp = [0, 3, 11];
+  const idx = parseInt(n/2);
+    
+  if(n % 2 === 1) return 0;
+  if(idx < 3) return dp[idx];
+  
+  for(let i = 3; i <= idx; i++) {
+      //이전 모양에서 2칸 추가 됐으니까 *3,+ (새로운 패턴) 2
+    dp[i] = dp[i-1] * 3 + 2;
+    
+    for(let j = 1; j < i-1; j++) {
+      //이전모양 * (새로운패턴)2
+        dp[i] += dp[j] * 2;
+    }
+    
+    dp[i] %= MOD;
+  }
+  
+  return dp[idx];
+}
