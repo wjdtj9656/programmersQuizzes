@@ -1,0 +1,44 @@
+function solution(orders, courses) {
+    var answer = [];
+    let map = new Map();
+    //조합으로 코스요리조합 찾기
+    for(let i=0; i<orders.length; i++){
+        combination(orders[i],map,0,[]);
+    }
+    let result =[...map];
+    result.sort((a,b)=>b[1]-a[1]);
+    for(let course of courses){
+        let value = -Infinity;
+        for(let i=0; i< result.length; i++){
+            //result[i][0] => 코스요리 문자조합
+            //result[i][1] => 주문된 횟수
+            //최소 2명이상의 손님의로부터 주문된 단품메뉴 조합
+            if(result[i][1] < 2) continue;
+            //BCFG, ACDE같은 횟수같은 코스요리 찾기 위함
+            if(value === result[i][1] && result[i][0].length === course){
+                answer.push(result[i][0]);
+                continue;
+            }
+            //많이 주문된 횟수로 정렬해놨으므로, 처음 만나는게 제일 많은 수의 코스요리
+            if(result[i][0].length === course){
+                //최대 코스요리 값을 유지시킴
+                if(value > result[i][1]) continue;
+                answer.push(result[i][0]);
+                value = result[i][1];
+                continue;
+            }
+        }
+    }
+    return answer.sort();
+}
+const combination = (arr, map, index, now) =>{
+    if(index === arr.length){
+        //코스요리 메뉴는 최소 2가지 이상의 단품메뉴
+        if(now.length<2) return;
+        let str = now.sort().join('');
+        map.set(str,map.get(str)+1||1);
+        return;
+    }
+    combination(arr,map,index+1,[...now,arr[index]]);
+    combination(arr,map,index+1,[...now]);
+}
