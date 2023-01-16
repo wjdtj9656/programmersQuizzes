@@ -1,0 +1,59 @@
+function solution(p) {
+    let answer = '';
+    //1
+    if(!p) return "";
+    let left = 0;
+    let right = 0;
+    let saveIndex = 0;
+    let u = "";
+    let v = "";
+    //2
+    for(let i=0; i<p.length; i++){
+        if(p[i] === '(') left++;
+        else if(p[i] === ')') right++;
+        if(left !== 0 && left === right){
+            saveIndex = i;
+            u += p[i];
+            break;
+        }
+        u += p[i];
+    }
+    for(let i=saveIndex+1; i<p.length; i++){
+        v += p[i];
+    }
+    //3
+    if(isCheck(u)){
+        //3-1
+        answer += u + solution(v);
+    }
+    //4
+    else{
+        //4-1
+        let str ='(';
+        //4-2 4-3
+        str += solution(v) + ")";
+        //4-4
+        u = u.slice(1,u.length-1);
+        //4-5
+        let arr = u.split('');
+        for(let i=0; i<arr.length; i++){
+            if(arr[i] =='(') arr[i] = ')';
+            else arr[i] = '(';
+        }
+        str += arr.join('');
+        return str;
+    }
+    return answer;
+}
+//올바른 괄호 문자열인지 확인하는 과정
+const isCheck = (u) =>{
+    let left = 0;
+    let right = 0;
+    for(let i=0; i<u.length; i++){
+        if(u[i] === '(') left++;
+        else if(u[i] === ')') right++;
+        if(left < right) return false;
+    }
+    if(left !== right ) return false;
+    return true;
+}
