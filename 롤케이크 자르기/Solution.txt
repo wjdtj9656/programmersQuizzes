@@ -1,0 +1,14 @@
+function solution(topping) {
+    let answer = 0;
+    const map = new Map();
+    const set = new Set();
+    topping.forEach((item)=>map.set(item,(map.get(item) || 0)+1));
+    for(let item of topping){
+        map.set(item,map.get(item)-1);
+        set.add(item);
+        if(map.get(item) === 0) map.delete(item);
+        if(map.size === set.size) answer++;
+        if(map.size < set.size) break;
+    }
+    return answer;
+}
