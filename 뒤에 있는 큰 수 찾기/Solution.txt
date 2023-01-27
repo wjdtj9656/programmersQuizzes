@@ -1,0 +1,23 @@
+function solution(numbers) {
+    let answer = new Array(numbers.length).fill(-1);
+    const stack = [];
+    for(let i=0; i<numbers.length; i++){
+        if(stack.length === 0){
+            stack.push([numbers[i],i]);
+        }
+        else{
+            if(stack[stack.length-1][0] >= numbers[i]){
+                stack.push([numbers[i],i]);
+            }
+            else{
+                while(stack.length != 0){
+                    if(stack[stack.length-1][0] >= numbers[i]) break;
+                    const [value, index] = stack.pop();
+                    answer[index] = numbers[i];
+                }
+                stack.push([numbers[i],i]);
+            }
+        }
+    }
+    return answer;
+}
