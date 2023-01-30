@@ -1,0 +1,47 @@
+function solution(n, info) {
+    let result = new Array(11).fill(0);
+    let max = 0;
+    //lion은 현재 라이언이 쏠 수 있는 화살 수
+    const combination = (arr, index, lion) =>{
+        if(lion < 0 || index >= 12) return;
+        if(lion === 0){
+            let a = 0;
+            let b = 0;
+            let value = -1;
+            while(arr.length !== 11){
+                arr.push(0);
+            }
+            //점수 계산하는 과정
+            for(let i=10; i>=0; i--){
+                value++;
+                if(info[i] === 0 && arr[i] === 0) continue;
+                if(info[i] >= arr[i]) a+= value;
+                else if(info[i] < arr[i]) b+= value;
+            }
+            if(a<b){
+                if(b-a == max){
+                    for(let i=10; i>=0; i--){
+                        if(result[i] > arr[i]) return;
+                        else if(result[i] < arr[i]){
+                            result = arr;
+                        }
+                    }
+                }
+                else if(b-a > max){
+                    max = b-a;
+                    result = arr;
+                }
+            }
+            return;
+        }
+        combination([...arr,0],index+1, lion);
+        for(let i=1; i<=info[index]+1; i++){
+            combination([...arr,i],index+1, lion -i);
+        }
+    }
+    combination([], 0, n);
+    
+    const sum = result.reduce((a,b)=>a+b,0);
+    if(sum === 0) return [-1];
+    return result;
+}
