@@ -1,0 +1,53 @@
+function solution(numbers) {
+    var answer = [];
+    //반환값 [1이있는지, 정상적인 문자열인지]
+    const search = (str) =>{
+        if(str.length === 1){
+            if(str[0] === '1') return [true,true];
+            return [false,true];
+        }
+        let mid = parseInt(str.length/2);
+        let left = search(str.slice(0,mid));
+        let right = search(str.slice(mid+1));
+        //왼쪽, 오른쪽이 모두 정상적인 문자열이 아니면 바로 실패
+        if(left[1] && right[1]){
+            //왼쪽오른쪽이 모두 1이 포함되어 있음, 따라서 가운데 값은 무조건 1이되야함.
+            if(left[0] && right[0]){
+                if(str[mid] === '1') return[true,true];
+                else return[true,false];
+            }
+            //왼쪽 오른쪽 둘다 1이 포함안되어 있음, 따라서 다운데 값은 어떤값도 가능함
+            else if(!left[0] && !right[0]){
+                if(str[mid] === '1') return[true,true];
+                else return [false, true];
+            }
+            //왼쪽 오른쪽 둘중 하나만 1이 포함된 경우, 가운데는 무조건 1이어야함.
+            else{
+                if(str[mid] === '1') return[true,true];
+                else return [true,false];
+            }
+            
+        }
+        //실패
+        else return [true,false];
+        }
+    
+    for(let number of numbers){
+        if(number===1){
+            answer.push(1);
+            continue;
+        }
+        let k = 0;
+        let str = number.toString(2);
+        while(2**k-1 < str.length){
+            k++;
+        }
+        
+        const startLen = str.length;
+        for(let i=startLen; i<2**k-1; i++){
+            str = '0' + str;
+        }
+        answer.push(search(str)[1]? 1:0);
+    }
+    return answer;
+}
