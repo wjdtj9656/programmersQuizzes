@@ -1,0 +1,50 @@
+class Solution {
+    public int[] solution(long[] numbers) {
+        int[] answer = new int[numbers.length];
+        int index = 0;
+        for(long number : numbers){
+            StringBuilder sb = new StringBuilder();
+            String str = Long.toBinaryString(number);
+            int k = 0;
+            while(str.length() > Math.pow(2,k)-1){
+                k++;
+            }
+            int len = str.length();
+            for(int i=len; i<Math.pow(2,k)-1; i++){
+                sb.append("0");
+            }
+            sb.append(str);
+            str = sb.toString();
+            boolean[] result = search(str);
+            if(result[1]) answer[index++] = 1;
+            else answer[index++] = 0;
+        }
+        return answer;
+    }
+    public boolean[] search(String str){
+        if(str.length() == 1){
+            if(str.equals("1")) return new boolean[]{true,true};
+            else return new boolean[]{false,true};
+        }
+        int mid = str.length()/2;
+        boolean[] left = search(str.substring(0,mid));
+        boolean[] right = search(str.substring(mid+1));
+        if(left[1] && right[1]){
+            if(left[0] && right[0]){
+                if(str.charAt(mid) == '1') return new boolean[]{true,true};
+                else return new boolean[]{true,false};
+            }
+            else if(!left[0] && !right[0]){
+                if(str.charAt(mid) == '1') return new boolean[]{true,true};
+                else return new boolean[]{false, true};
+            }
+            else{
+                if(str.charAt(mid) == '1') return new boolean[]{true,true};
+                else return new boolean[]{true,false};
+            }
+        }
+        else{
+            return new boolean[]{true,false};
+        }
+    }
+}
