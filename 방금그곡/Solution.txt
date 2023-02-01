@@ -1,0 +1,37 @@
+function solution(m, musicinfos) {
+    var answer = '';
+    let result = [];
+    let musicInfoNum = 0;
+    for(let musicinfo of musicinfos){
+        let [start,end,title,info] = musicinfo.split(",");
+        let [sh,sm] = start.split(":");
+        let [eh,em] = end.split(":");
+        start = parseInt(sh)*60 + parseInt(sm);
+        end = parseInt(eh)*60 + parseInt(em);
+        
+        let index = 0;
+        let str = "";
+        const time = end - start;
+        if(time <= 0) continue;
+        for(let i=0; i<time; i++){
+            str += info[index++];
+            if(info[index] === '#') str+=info[index++];
+            if(index == info.length) index = 0;
+        }
+        //ABC를 찾아야하는데 ABC#이있으면 제거
+        str = str.replaceAll(m+"#",'');
+        if(str.includes(m)){
+            //걸린시간, 제목, 입력된순서 데이터 넣기
+            result.push([time,title,musicInfoNum++]);
+        }
+    }
+    if(result.length === 0) return "(None)";
+    //걸린시간 으로 정렬하고, 입력순으로 정렬
+    result.sort((a,b)=>{
+        if(a[0] === b[0]){
+            return a[2] - b[2];
+        }
+        return b[0] - a[0];
+    })
+    return result[0][1];
+}
