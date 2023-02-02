@@ -1,0 +1,19 @@
+function solution(n, t, m, p) {
+    var answer = '';
+    let index = 0;
+    let step = 0;
+    for1:
+    for(let i=0; i<t*m; i++){
+        let str = i.toString(n);
+        for(let j=0; j<str.length; j++){
+            index++;
+            if(index > m) index = 1;
+            if(index === p) {
+                answer+=str[j];
+            }
+            step++;
+            if(step >= t*m) break for1;
+        }
+    }
+    return answer.toUpperCase();
+}
