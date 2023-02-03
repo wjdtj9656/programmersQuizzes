@@ -1,0 +1,28 @@
+function solution(msg) {
+    let answer = [];
+    const map = new Map();
+    let num = 65;
+    for(let i=1; i<=26; i++){
+        map.set(String.fromCharCode(num++),i);
+    }
+    let index = 27;
+    for(let i=0; i<msg.length; i++){
+        let str = msg[i];
+        let add = 0;
+        while(true){
+            if(map.has(str)){
+                add++;
+                if(!msg[add+i]){
+                    answer.push(map.get(str));
+                    return answer;
+                }
+                str += msg[add+i];
+            }
+            else break;
+        }
+        i+=str.length-2;
+        map.set(str,index++);
+        answer.push(map.get(str.slice(0,str.length-1)));
+    }
+    return answer;
+}
