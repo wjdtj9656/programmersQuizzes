@@ -1,0 +1,43 @@
+function solution(relations) {
+    let answer = [];
+    const allKey = [];
+    //조합으로 나올 수 있는 경우의 수 찾기
+    const combi = (index, now) =>{
+        if(index === relations[0].length){
+            allKey.push([...now]);
+            return;
+        }
+        combi(index+1, [...now,index]);
+        combi(index+1, [...now])
+    }
+    combi(0,[]);
+    
+    const result = [];
+    //얻은 경우의 수들 중에 유일성을 만족시키는 키 찾음
+    for(let keys of allKey){
+        const set = new Set();
+        for(let relation of relations){
+            let strKey = "";
+            for(let key of keys){
+                strKey += relation[key];
+            }
+            set.add(strKey);
+        }
+        if(set.size === relations.length) result.push(keys);
+    }
+    //최소성을 만족시키는 키 찾음
+    for1:
+    for(let result1 of result){
+        for(let result2 of result){
+            if(result1 === result2) continue;
+            if(result1.length < result2.length) continue;
+            let value = 0;
+            for(let i=0; i<result2.length; i++){
+                if(result1.includes(result2[i])) value++;
+            }
+            if(value === result2.length) continue for1;
+        }
+        answer.push(result1)
+    }
+    return answer.length;
+}
