@@ -1,0 +1,54 @@
+function solution(board) {
+    var answer = 0;
+    const len = board.length;
+    
+    const check = (x,y) =>{
+        if(x<0 || y<0 || x>=len || y>=len) return false;
+        return true;
+    }
+    const bfs = () =>{
+        const q = [[[0,0],[0,1],0]];
+        const visit = new Set();
+        while(q.length){
+            const [pos1,pos2,cnt] = q.shift();
+            const pos = [pos1,pos2];
+            //정렬해서 위치 파악함
+            pos.sort((a,b)=>{
+                if(a[0] === b[0]) return a[1] - b[1];
+                return a[0] - b[0];
+            })
+            const [[x1,y1],[x2,y2]] = pos;
+            if(board[x1][y1] === 1 || board[x2][y2] === 1) continue;
+            if((x1===len-1 && y1===len-1) || (x2===len-1 && y2===len-1)) return cnt;
+            if(visit.has(`${x1}-${y1}-${x2}-${y2}`)) continue;
+            visit.add(`${x1}-${y1}-${x2}-${y2}`);
+            if(y1>0 && y2>0) q.push([[x1,y1-1],[x2,y2-1],cnt+1]);
+            if(x1>0 && x2>0) q.push([[x1-1,y1],[x2-1,y2],cnt+1]);
+            if(y1<len-1 && y2<len-1)q.push([[x1,y1+1],[x2,y2+1],cnt+1]);
+            if(x1<len-1 && x2<len-1) q.push([[x1+1,y1],[x2+1,y2],cnt+1]);
+            //가로 모양
+            if(x1 === x2){
+               if(check(x1-1,y1) && check(x2-1,y2) && board[x1-1][y1] === 0 && board[x2-1][y2] === 0){
+                   q.push([[x1,y1],[x2-1,y2-1],cnt+1]);
+                   q.push([[x1-1,y1+1],[x2,y2],cnt+1]);
+               }
+                if(check(x1+1,y1) && check(x2+1,y2) &&board[x1+1][y1] === 0 && board[x2+1][y2] === 0){
+                    q.push([[x1,y1],[x2+1,y2-1],cnt+1]);
+                    q.push([[x1+1,y1+1],[x2,y2],cnt+1]);
+                }
+            }
+            //세로모양
+            if(y1 === y2){
+                if(check(x1,y1-1) && check(x2,y2-1) &&board[x1][y1-1] === 0 && board[x2][y2-1] === 0){
+                    q.push([[x1,y1],[x2-1,y2-1],cnt+1]);
+                    q.push([[x1+1,y1-1],[x2,y2],cnt+1]);
+                }
+                if(check(x1,y1+1) && check(x2,y2+1) &&board[x1][y1+1] === 0 && board[x2][y2+1] === 0){
+                    q.push([[x1,y1],[x2-1,y2+1],cnt+1]);
+                    q.push([[x1+1,y1+1],[x2,y2],cnt+1]);
+                }
+            }
+        }
+    }
+    return bfs();
+}
