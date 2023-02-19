@@ -1,0 +1,15 @@
+function solution(cards1, cards2, goal) {
+    var answer = '';
+    let left = 0;
+    let right = 0;
+    for(let i=0; i<goal.length; i++){
+        if(cards1[left] === goal[i]){
+            left++;
+        }
+        else if(cards2[right] === goal[i]){
+            right++;
+        }
+        else return "No";
+    }
+    return "Yes";
+}
