@@ -1,0 +1,34 @@
+function solution(maps) {
+    var answer = [];
+    let row = maps.length;
+    let col = maps[0].length;
+    const visit = new Set();
+    let dx = [-1,0,1,0];
+    let dy = [0,-1,0,1];
+    let result = 0;
+    const dfs = (x,y) =>{
+        if(visit.has(`${x}-${y}`)) return;
+        visit.add(`${x}-${y}`);
+        result += parseInt(maps[x][y]);
+        for(let i=0; i<4; i++){
+            let nx = x + dx[i];
+            let ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= row || ny >= col) continue;
+            if(visit.has(`${nx}-${ny}`)) continue;
+            if(maps[nx][ny] === 'X') continue;
+            dfs(nx,ny);
+        }
+        return result;
+    }
+    //모든칸 dfs돌기
+    //그러나 X를만나거나 이미 방문한곳이면 취소
+    for(let i=0; i<maps.length; i++){
+        for(let j=0; j<maps[i].length; j++){
+            if(maps[i][j] === 'X' || visit.has(`${i}-${j}`)) continue;
+            result = 0;
+            answer.push(dfs(i,j));
+        }
+    }
+    answer.sort((a,b)=>a-b);
+    return answer.length ===0? [-1]: answer;
+}
