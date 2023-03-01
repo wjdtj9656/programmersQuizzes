@@ -1,0 +1,31 @@
+function solution(n, computers) {
+    const answer = new Set();
+    const parent = new Array(n).fill(-1);
+    const find = (a) =>{
+        if(parent[a] === a) return a;
+        return find(parent[a]);
+    }
+    const union = (a,b) =>{
+        let parentA = find(a);
+        let parentB = find(b);
+        if(parentA === parentB) return;
+        for(let i=0; i<parent.length; i++){
+            if(parent[i] === parentB) parent[i] = parentA;
+        }
+        parent[b] = parentA;
+        return;
+    }
+    //자기자신을 부모로 초기화
+    for(let i=0; i<parent.length; i++){
+        parent[i] = i;
+    }
+    //연결되어 있을때만 UNION 시도
+    for(let i=0; i<computers.length; i++){
+        for(let j=0; j<computers[i].length; j++){
+            if(computers[i][j] ===1) union(i,j);
+        }
+    }
+    //SET에 값 넣기
+    parent.forEach(val=>answer.add(val));
+    return answer.size;
+}
