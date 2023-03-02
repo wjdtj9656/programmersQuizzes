@@ -1,0 +1,21 @@
+function solution(scores) {
+    var answer = 1;
+    const score1 = scores[0][0];
+    const score2 = scores[0][1];
+    const myScore = score1 + score2;
+    scores.sort((a,b)=>{
+        if(a[0]===b[0]) return a[1] - b[1];
+        return b[0] - a[0];
+    })
+    let stan = 0;
+    let sum = 0;
+    for(let i=0; i<scores.length; i++){
+        if(score1 < scores[i][0] && score2 < scores[i][1]) return -1;
+        if(stan <= scores[i][1]){ 
+            sum = scores[i][0] + scores[i][1];
+            if(myScore < sum) answer+=1;
+            stan = scores[i][1];
+        }
+    }
+    return answer;
+}
