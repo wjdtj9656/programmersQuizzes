@@ -1,0 +1,28 @@
+function solution(begin, target, words) {
+    var answer = 0;
+    const bfs = () =>{
+        const q = [[begin,0]];
+        const visit = new Set();
+        while(q.length){
+            const [now,cnt] = q.shift();
+            if(now === target){
+                answer = cnt;
+                return;
+            }
+            for(let i=0; i<words.length; i++){
+                let diff = 0;
+                if(visit.has(i)) continue;
+                for(let j=0; j<words[i].length; j++){
+                    if(now[j] !== words[i][j]) diff++;
+                    if(diff>1) break;
+                }
+                if(diff===1){
+                    visit.add(i);
+                    q.push([words[i],cnt+1]);
+                }
+            }
+        }
+    }
+    bfs();
+    return answer;
+}
