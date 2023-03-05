@@ -1,0 +1,16 @@
+function solution(n, m, section) {
+    var answer = 0;
+    const len = section.length;
+    for(let i=0; i<len;){
+        let add = section[0] + m - 1;
+        let flag = false;
+        while(section[0] <= add){
+            section.shift();
+            i++;
+            flag = true;
+        }
+        if(!flag) i++; 
+        answer++;
+    }
+    return answer;
+}
