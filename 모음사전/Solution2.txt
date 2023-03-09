@@ -1,0 +1,18 @@
+function solution(word) {
+    let answer = 0;
+    const alpha=["A","E","I","O","U"];
+    const set = new Set();
+    const search = (index, str) =>{
+        if(index === 5){
+            set.add(str);
+            return;
+        }
+        for(let i=0; i<5; i++){{
+            search(index+1,alpha[i] + str);
+            search(index+1,str);
+        }}
+    }
+    search(0,"");
+    answer = [...set].sort().indexOf(word);
+    return answer;
+}
