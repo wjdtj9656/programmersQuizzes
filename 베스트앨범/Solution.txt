@@ -1,0 +1,37 @@
+function solution(genres, plays) {
+    var answer = [];
+    const mapCnt = new Map();
+    const mapPlay = new Map();
+    for(let i=0; i<genres.length; i++){
+        mapCnt.set(genres[i],(mapCnt.get(genres[i]) || 0) + 1);
+        mapPlay.set(genres[i],(mapPlay.get(genres[i]) || 0) + plays[i]);
+    }
+    
+    const genrePlay = [...mapPlay];
+    genrePlay.sort((a,b)=>b[1]-a[1]);
+    const genreRank = new Map();
+    genreRank.set(genrePlay[0][0],1);
+    
+    for(let i=1; i<genrePlay.length; i++){
+        let rank = i+1;
+        if(genrePlay[i][1] === genrePlay[i-1][1]) rank = genreRank.get(genrePlay[i-1][0]);
+        genreRank.set(genrePlay[i][0], rank);
+    }
+    const arr = [];
+    for(let i=0; i<genres.length; i++){
+        arr.push([i, genreRank.get(genres[i]), plays[i], genres[i]]);
+    }
+    
+    arr.sort((a,b)=>{
+        if(a[1] === b[1]) return b[2] - a[2];
+        else if(a[2] === b[2]) return a[1] - b[1];
+        return a[1] - b[1];
+    })
+    const resultMap = new Map();
+    for(let i=0; i<arr.length; i++){
+        if(resultMap.get(arr[i][3]) === 2) continue;
+        resultMap.set(arr[i][3],(resultMap.get(arr[i][3]) || 0)+1);
+        answer.push(arr[i][0])
+    }
+    return answer;
+}
