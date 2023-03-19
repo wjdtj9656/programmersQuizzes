@@ -1,0 +1,27 @@
+function solution(n, m, x, y, r, c, k) {
+    var answer = '';
+    const dx = [1,0,0,-1];
+    const dy = [0,-1,1,0];
+    const dir = ["d","l","r","u"];
+    const distance = Math.abs(x-r) + Math.abs(y-c);
+    if(distance > k || (k - distance)%2 === 1) return "impossible";
+    const dfs = (x,y,k,str,diff) =>{
+        if(k===0 && diff===0){
+            answer = str;
+            return true;
+        }
+        for(let i=0; i<4; i++){
+            let nx = x + dx[i];
+            let ny = y + dy[i];
+            if(nx>=0 && ny>=0 && nx<n && ny<m && diff<=k){
+                if((diff%2 == 0 && k % 2 ==0) || (diff%2 == 1 && k%2 ===1)) {
+                   if(dfs(nx,ny,k-1,str+dir[i],Math.abs(nx-(r-1))+Math.abs(ny-(c-1)))) return true;
+                   }
+            }
+        }
+        return false;
+    }
+    dfs(x-1,y-1,k,"",distance);
+    // dfs(x-1,y-1,"",0);
+    return answer;
+}
