@@ -1,0 +1,41 @@
+function solution(plans) {
+    const answer = [];
+    const stop = [];
+    const now = [];
+    for(let i=0; i<plans.length; i++){
+        let time = plans[i][1];
+        let [hour, min] = time.split(":");
+        let sum = parseInt(hour)*60 + parseInt(min);
+        plans[i][1] = sum;
+        plans[i][2] = parseInt(plans[i][2]);
+    }
+    plans.sort((a,b)=>a[1]-b[1]);
+    let start = 0;
+    let end = 100000;
+    for(let i=start; i<end; i++){
+        if(answer.length === plans.length) break;
+        for(let j=0; j<plans.length; j++){
+            if(i === plans[j][1]){
+                if(now.length === 0) {
+                    now.push(plans[j]);
+                    break;
+                }
+                else{
+                    stop.push(now.pop());
+                    now.push(plans[j]);
+                    break;
+                }
+            }
+        }
+        if(now.length === 1 && now[0][2] > 0){
+            now[0][2]--;
+            if(now[0][2] === 0){
+                answer.push(now.pop()[0]);
+            }
+        }
+        if(now.length === 0 && stop.length > 0){
+            now.push(stop.pop());
+        }
+    }
+    return answer;
+}
