@@ -1,0 +1,35 @@
+function solution(user_id, banned_id) {
+    var answer = 0;
+    const map = new Map();
+    const select = Array.from(new Array(banned_id.length),()=>new Array());
+    let index = 0;
+    for(let id of banned_id){
+        let str = "";
+        for(let i=0; i<id.length; i++){
+            if(id[i] ==="*") str+=".";
+            else str += id[i];
+        }
+        const regex = new RegExp(str,'g');
+        for(let i=0; i<user_id.length; i++){
+            if(str.length === user_id[i].length){
+                const result = user_id[i].match(regex);
+                if(result) select[index].push(result[0]);
+            }
+        }
+        index++;
+    }
+    const set = new Set();
+    const search = (arr, index,now) =>{
+        if(arr.length === index){
+            now.sort();
+            set.add(now.join(''));
+            return;
+        }
+        for(let i=0; i<arr[index].length; i++){
+            if(now.includes(arr[index][i])) continue;
+            search(arr,index+1,[...now,arr[index][i]]);
+        }
+    }
+    search(select, 0,[]);
+    return set.size;
+}
