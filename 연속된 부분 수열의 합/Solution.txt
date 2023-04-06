@@ -1,0 +1,30 @@
+class Solution {
+    public int[] solution(int[] sequence, int k) {
+        int[] answer = new int[2];
+        int left = 0;
+        int right = 0;
+        int sumArr[] = new int[sequence.length];
+        sumArr[0] = sequence[left];
+        for(int i=1; i<sequence.length; i++){
+            sumArr[i] = sumArr[i-1] + sequence[i];
+        }
+        int min = sequence.length;
+        while(left <= right && left < sequence.length && right < sequence.length){
+            int sum = 0;
+            if(left<=0) sum = sumArr[right];
+            else sum = sumArr[right] - sumArr[left-1];
+            
+            if(sum == k){
+                int now = right - left -1;
+                if(min > now){
+                    min = now;
+                    answer[0] = left;
+                    answer[1] = right;
+                }
+            }
+            if(sum < k) right++;
+            else left++;
+        }
+        return answer;
+    }
+}
