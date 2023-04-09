@@ -1,0 +1,133 @@
+function solution(commands) {
+    var answer = [];
+    const map = Array.from(Array(51),()=>new Array(51).fill("EMPTY"));
+    const group = new Map();
+    let groupNum = 1;
+    for(let command of commands){
+        // console.log(command);
+        // console.log(map);
+        command = command.split(" ");
+        if(command[0] === "UPDATE"){
+            if(command.length === 4){
+                let r = command[1];
+                let c = command[2];
+                let value = command[3];
+                let origin = map[r][c];
+                map[r][c] = value;
+                let myGroup = group.get(`${r} ${c}`);
+                if(myGroup !== undefined)
+                for(let [key,num] of group){
+                    if(myGroup === num){
+                        let str = key.split(" ");
+                        map[str[0]][str[1]] = value;
+                    }
+                }
+            }
+            else if(command.length === 3){
+                for(let i=0; i<51; i++){
+                    for(let j=0; j<51; j++){
+                        if(map[i][j] === command[1]) map[i][j] = command[2];
+                    }
+                }
+            }
+        }
+        else if(command[0] === "MERGE"){
+            let r1 = command[1];
+            let c1 = command[2];
+            let r2 = command[3];
+            let c2 = command[4];
+            let v1 = map[r1][c1];
+            let v2 = map[r2][c2];
+            let g1 = group.get(`${r1} ${c1}`);
+            let g2 = group.get(`${r2} ${c2}`);
+            if(!g1 && !g2){
+                group.set(`${r1} ${c1}`, groupNum);
+                group.set(`${r2} ${c2}`, groupNum);
+                if(v1 ==="EMPTY" && v2){
+                    map[r1][c1] = v2;
+                }
+                else{
+                    map[r2][c2] = v1;
+                }
+                groupNum++;
+            }
+            else if(g1 && !g2){
+                group.set(`${r2} ${c2}`, g1);
+                if(v1 ==="EMPTY" && v2){
+                    map[r1][c1] = v2;
+                    for(let [key,num] of group){
+                        if(g1 === num){
+                            let str = key.split(" ");
+                            map[str[0]][str[1]] = v2;
+                        }
+                    }
+                }
+                else{
+                    map[r2][c2] = v1;
+                }
+            }
+            else if(!g1 && g2){
+                group.set(`${r1} ${c1}`, g2);
+                if(v1 ==="EMPTY" && v2){
+                    map[r1][c1] = v2;
+                }
+                else{
+                    for(let [key,num] of group){
+                        if(g2 === num){
+                            let str = key.split(" ");
+                            map[str[0]][str[1]] = v1;
+                        }
+                    }
+                    map[r2][c2] = v1;
+                }
+            }
+            else{
+                
+                if(v1 ==="EMPTY" && v2){
+                    group.set(`${r1} ${c1}`,g2);
+                    map[r1][c1] = v2;
+                    for(let [key,num] of group){
+                        if(g1 === num){
+                            let str = key.split(" ");
+                            map[str[0]][str[1]] = v2;
+                            group.set(key,g2);
+                        }
+                    }
+                }
+                else{
+                    group.set(`${r2} ${c2}`,g1);
+                    for(let [key,num] of group){
+                        if(g2 === num){
+                            let str = key.split(" ");
+                            map[str[0]][str[1]] = v1;
+                            group.set(key,g1);
+                        }
+                    }
+                    map[r2][c2] = v1;
+                }
+            }
+        }
+        else if(command[0] === "UNMERGE"){
+            let r = command[1];
+            let c = command[2];
+            let v = map[r][c];
+            let myGroup = group.get(`${r} ${c}`);
+            if(myGroup)
+            for(let [key,num] of group){
+                if(num === myGroup){
+                    let str = key.split(" ");
+                    map[str[0]][str[1]] = "EMPTY";
+                    group.delete(key);
+                }
+            }
+            map[r][c] = v;
+        }
+        else if(command[0] === "PRINT"){
+            let r = command[1];
+            let c = command[2];
+            let result = map[r][c];
+            answer.push(result);
+        }
+    }
+    return answer;
+}
