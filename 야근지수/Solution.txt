@@ -1,0 +1,27 @@
+function solution(n, works) {
+    var answer = 0;
+    const map = new Map();
+    let max = Math.max(...works);
+    for(let i=0; i<works.length; i++){
+        map.set(works[i], (map.get(works[i]) || 0)+1);
+    }
+    
+    while(n>0){
+        map.set(max, map.get(max)-1);
+        map.set(max-1,(map.get(max-1) || 0)+1);
+        n--;
+        if(map.get(max) === 0){
+            map.delete(max);
+            max = Math.max(...map.keys());
+            if(max === 0) break;
+        }
+    }
+    
+    for(let [key,value] of map){
+        for(let i=0; i<value; i++){
+            answer += key * key;
+        }
+    }
+    
+    return answer;
+}
