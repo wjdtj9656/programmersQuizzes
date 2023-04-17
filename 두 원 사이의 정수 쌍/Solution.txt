@@ -1,0 +1,24 @@
+function solution(r1, r2) {
+    var answer = 0;
+    let small = 0;
+    let large = 0;
+    let cnt = 0;
+    for(let i=0; i<=r1; i++){
+        const maxY = (r1**2 - i**2) ** 0.5;
+        let flag = false;
+        if(maxY%1 === 0){
+            cnt++;
+            flag = true;
+        }
+        small += Math.ceil(maxY) + (flag? 1:0);
+    }
+    for(let i=0; i<=r2; i++){
+        const maxY = (r2**2 - i**2) ** 0.5;
+        large += Math.ceil(maxY) + (maxY%1===0? 1:0);
+    }
+    let diff = r2 - r1;
+    if(cnt === 2) cnt = 0;
+    else cnt -= 2;
+    answer = (large - small - (r2-r1)*2 +cnt) * 4 + (r2-r1+1)*4;
+    return answer;
+}
