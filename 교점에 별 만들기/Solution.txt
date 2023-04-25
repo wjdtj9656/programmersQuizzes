@@ -1,0 +1,40 @@
+function solution(line) {
+    const set = new Set();
+    const star = new Set();
+    let maxR = -Infinity;
+    let maxC = -Infinity;
+    let minR = Infinity;
+    let minC = Infinity;
+    for(let i=0; i<line.length; i++){
+        for(let j=i+1; j<line.length; j++){
+            let [a1,b1,c1] = line[i];
+            let [a2,b2,c2] = line[j];
+            let result = intersection(a1,a2,b1,b2,c1,c2);
+            if(result === -1) continue;
+            star.add(`${result[0]} ${result[1]}`);
+            maxR = Math.max(maxR, (result[0]));
+            maxC = Math.max(maxC, (result[1]));
+            minR = Math.min(minR, (result[0]));
+            minC = Math.min(minC, (result[1]));
+        }
+    }
+    const answer = new Array(maxC-minC+1).fill('.').map(()=>new Array(maxR-minR+1).fill('.'));
+    for(let value of [...star]){
+        let [x,y] = value.split(" ");
+        x = parseInt(x);
+        y = parseInt(y);
+        x = x-minR;
+        y = maxC-y;
+        answer[y][x] = "*";
+    }
+    for(let i=0; i<answer.length; i++){
+        answer[i] = answer[i].join("");
+    }
+    return answer;
+}
+const intersection = (a1,a2,b1,b2,c1,c2)=>{
+    const x = (b1*c2 - c1*b2) / (a1*b2 - a2*b1);
+    const y = (a2*c1 - c2*a1) / (a1*b2 - a2*b1);
+    if(x % 1 === 0 && y % 1 === 0) return [x,y];
+    return -1;
+}
