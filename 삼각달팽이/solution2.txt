@@ -1,0 +1,34 @@
+function solution(n) {
+    const answer = [];
+    const arr = new Array(n).fill(0).map(()=>new Array(n).fill(0));
+    const dx = [1, 0, -1];
+    const dy = [0, 1, -1];
+    const q = [[0,0]];
+    let dir = 0;
+    let sum = n*(n+1)/2;
+    sum = parseInt(sum);
+    let cnt = 2;
+    arr[0][0] = 1;
+    while(cnt <= sum){
+        const [x,y] = q.shift();
+        let nx = x + dx[dir];
+        let ny = y + dy[dir];
+        if(nx < 0 || ny < 0 || nx>=n || ny>=n || arr[nx][ny] !== 0){
+            dir++;
+            dir>2? dir=0:"";
+            q.unshift([x,y]);
+            
+        }
+        else{
+            q.push([nx,ny]);
+            arr[nx][ny] = cnt++;
+        }
+    }
+    for(let i=0; i<arr.length; i++){
+        for(let j=0; j<arr[i].length; j++){
+            if(arr[i][j] === 0) break;
+            else answer.push(arr[i][j]);
+        }
+    }
+    return answer;
+}
