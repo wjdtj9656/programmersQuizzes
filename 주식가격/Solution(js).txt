@@ -1,0 +1,25 @@
+function Solution(prices){
+	const q = [];
+	const answer = new Array(prices.length).fill(0);
+	for(let i=0; i<prices.length; i++){
+		if(q.length === 0){
+			q.push([prices[i],i]);
+			continue;
+		}
+		else{
+			while(q[q.length-1][0] > prices[i]){
+				answer[q[q.length-1][1]] = i - q[q.length-1][1];
+				q.pop();
+				if(q.length ===0) break;
+			}
+		}
+			q.push([prices[i],i]);
+    }
+    
+    for (let i = 0; i < q.length; i++){
+        let [a, b] = q[i];
+        answer[b] = prices.length - 1 - b;
+    }
+    console.log(answer);
+    return answer;
+}
