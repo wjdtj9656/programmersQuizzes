@@ -1,0 +1,14 @@
+function solution(board)
+{
+    let m = board.length;
+    let n = board[0].length;
+    let answer = 0;
+    if(m<2 || n<2) return 1;
+    for(let i=1; i<m; i++){
+        for(let j=1; j<n; j++){
+            if(board[i][j] != 0) board[i][j] = Math.min(board[i][j-1], board[i-1][j], board[i-1][j-1])+1;
+            answer = Math.max(answer, board[i][j]);
+        }
+    }
+    return answer*answer;
+}
