@@ -1,0 +1,41 @@
+function solution(board)
+{
+    let answer = 0;
+    const m = board.length;
+    const n = board[0].length;
+    const map = new Map();
+    let sumArr = new Array(m).fill(0).map(()=> new Array(n).fill(0));
+    for(let i=0; i<n; i++){
+        sumArr[0][i] = board[0][i];
+    }
+    for(let i=1; i<m; i++){
+        for(let j=0; j<n; j++){
+            if(board[i][j] === 0) sumArr[i][j] = 0;
+            else sumArr[i][j] = sumArr[i-1][j] + board[i][j];
+        }
+    }
+    for(let i=0; i<m; i++){
+        let num = -1;
+        let prev = -1;
+        let q = [];
+        let index = 0;
+        for(let j=n-1; j>=0; j--){
+            num = sumArr[i][j];
+            if(num === 0){
+                q = [];
+                continue;
+            }
+            q.push(num);
+            while(q.length && q[index] > num){
+                index++;
+                if(q.length >= num) answer = Math.max(answer, num);
+                
+            }
+            while(q.length && q.length >= q[0]){
+                answer = Math.max(answer, q[index]);
+            }
+        }
+        
+    }
+    return answer*answer;
+}
