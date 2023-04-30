@@ -1,0 +1,38 @@
+function solution(places) {
+    var answer = [];
+    const dx = [-1,0,1,0];
+    const dy = [0,-1,0,1];
+    const bfs = (k,x,y) =>{
+        const q = [[x,y,0]];
+        const visit = new Set();
+        // console.log("q",x,y)
+        while(q.length){
+            let [cx,cy,cl] = q.shift();
+            // console.log("haha",cx,cy,cl,places[k][cx][cy]);
+            visit.add(`${cx}-${cy}`);
+                for(let i=0; i<4; i++){
+                    let nx = cx + dx[i];
+                    let ny = cy + dy[i];
+                    let nl = cl + 1;
+                    if(nx < 0 || ny < 0 || nx >= 5 || ny >= 5 || nl > 2 || places[k][nx][ny] ==="X") continue;
+                    if(visit.has(`${nx}-${ny}`)) continue;
+                    if(places[k][nx][ny] === 'P') return false;
+                    q.push([nx,ny,nl]);
+            }
+        }
+        return true;
+    }
+    for(let k=0; k<places.length; k++){
+        let check = true;
+        for(let i=0; i<places[k].length; i++){
+            for(let j=0; j<5; j++){
+                if(places[k][i][j] === "P"){
+                    if(!bfs(k,i,j)) check = false;
+                }
+            }
+        }
+        if(check) answer.push(1);
+        else answer.push(0);
+    }
+    return answer;
+}
