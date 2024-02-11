@@ -1,0 +1,20 @@
+function solution(menu, order, k) {
+    var answer = 0;
+    const maxTime = (order.length-1)*k;
+    let waiting = 0;
+    let now = 0;
+    let makingTime = 0;
+    for(let i=0; i<=maxTime; i++){
+        if(waiting > 0) makingTime++;
+        if(makingTime == menu[order[now]]){
+            now++;
+            makingTime=0;
+            waiting--;
+        }
+        if(i % k == 0){
+            waiting++;
+        }
+        answer = Math.max(answer, waiting);
+    }
+    return answer;
+}
