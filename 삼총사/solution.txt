@@ -1,0 +1,22 @@
+function solution(number) {
+    var answer = 0;
+    let cnt = 0;
+    const n = number.length;
+    const visit = new Array(n).fill(false);
+    const search = (index,arr,now) =>{
+        if(index == 3){
+            let sum = arr.reduce((a,b)=>a+b,0);
+            if(sum ==0) cnt++;
+            return;
+        }
+        for(let i=now; i<number.length; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                search(index+1,[...arr,number[i]],i)
+                visit[i] = false;
+            }
+        }
+    }
+    search(0,[],0);
+    return cnt;
+}
