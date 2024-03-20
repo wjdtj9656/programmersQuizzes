@@ -1,0 +1,13 @@
+function solution(routes) {
+    var answer = 1;
+    routes.sort((a,b)=>a[1]-b[1]);
+    let now = routes[0][1];
+    for(let i=1; i<routes.length; i++){
+        if(now >= routes[i][0])continue;
+        else{
+            answer++;
+            now = routes[i][1];
+        }
+    }
+    return answer;
+}
