@@ -1,0 +1,31 @@
+function solution(n, stations, w) {
+    var answer = 0;
+    const arr = [];
+    for(let i=0; i<stations.length; i++){
+        arr.push(stations[i]-w);
+    }
+    arr.reverse();
+    let now = arr.pop();
+    for(let i=1; i<=n; i++){
+        if(now <= i){
+            i = now + w + w;
+            if(arr.length > 0){
+                now = arr.pop();
+            }
+            else{
+                let num = n-i;
+                let num2 = 1+w+w;
+                answer += num/num2>>0;
+                if(num%num2 > 0) answer+=1;
+                break;
+            }
+        }
+        else{
+            i = i + w + w;
+            answer++;
+        }
+        
+    }
+
+    return answer;
+}
