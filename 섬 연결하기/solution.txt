@@ -1,0 +1,26 @@
+function solution(n, costs) {
+    var answer = 0;
+    costs.sort((a,b)=>a[2]-b[2]);
+    const arr = new Array(n).fill(0);
+    for(let i=0; i<n; i++){
+        arr[i] = i;
+    }
+    const getP = (a) =>{
+        if(arr[a] == a) return a;
+        return arr[a] = getP(arr[a]);
+    }
+    const union = (a,b)=>{
+        a = getP(a);
+        b = getP(b);
+        if(a==b) return false;
+        if(a>b) arr[b] = a;
+        else arr[a] = b;
+        return true;
+    }
+    for(let i=0; i<costs.length; i++){
+        if(union(costs[i][0],costs[i][1])){
+            answer += costs[i][2];       
+        }
+    }
+    return answer;
+}
