@@ -1,0 +1,22 @@
+function solution(data, col, row_begin, row_end) {
+    var answer = 1;
+    data.sort((a,b)=>{
+        if(a[col-1] == b[col-1]){
+            return b[0] - a[0];
+        }
+        else return a[col-1] - b[col-1];
+    })
+    const sum = [];
+    for(let i=row_begin-1; i<=row_end-1; i++){
+        let temp = 0;
+        for(let j=0; j<data[0].length; j++){
+            temp += data[i][j] % (i+1);
+        }
+        sum.push(temp);
+    }
+    answer = sum[0];
+    for(let i=1; i<sum.length; i++){
+        answer ^= sum[i];
+    }
+    return answer;
+}
