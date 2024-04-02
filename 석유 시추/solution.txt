@@ -1,0 +1,40 @@
+function solution(land) {
+    var answer = 0;
+    const m = land.length;
+    const n = land[0].length;
+    const visit = new Array(m).fill(0).map(()=>new Array(n).fill(0));
+    const arr = new Array(n).fill(0);
+    const dx = [-1,0,1,0];
+    const dy = [0,-1,0,1];
+    const bfs = (x,y,set) =>{
+        const q = [[x,y]];
+        visit[x][y] = 1;
+        let cnt = 1;
+        set.add(y);
+        while(q.length){
+            const [cx,cy] = q.pop();
+            set.add(cy);
+            for(let i=0; i<4; i++){
+                let nx = cx + dx[i];
+                let ny = cy + dy[i];
+                if(nx < 0 || ny < 0 || nx>=m || ny>=n || visit[nx][ny] || land[nx][ny] == 0) continue;
+                q.push([nx,ny]);
+                visit[nx][ny] = 1;
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+    for(let i=0; i<m; i++){
+        for(let j=0; j<n; j++){
+            if(land[i][j] == 1 && visit[i][j] == 0){
+                const set = new Set();
+                let res = bfs(i,j,set);
+                for(let num of set){
+                     arr[num] += res;
+                }
+            }
+        }
+    }
+    return Math.max(...arr);
+}
