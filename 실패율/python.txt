@@ -1,0 +1,22 @@
+def solution(N, stages):
+    answer = []
+    fail = [0 for i in range(0,N+2)]
+    for i in range(N+2):
+        fail[i] = [i,0];
+    map = {}
+    people = len(stages)
+    for i in range(len(stages)):
+        value = map.get(stages[i],0)
+        map[stages[i]] = value+1
+    sortedMap = sorted(map.items(),key=lambda x:(x[0]))
+    for i in range(len(sortedMap)):
+        stage = sortedMap[i][0]
+        num = sortedMap[i][1]
+        fail[stage] = [stage,num/people]
+        people -= num
+    fail.pop(0);
+    fail.pop();
+    fail = sorted(fail,key=lambda x:(-x[1],x[0]))
+    for i in range(len(fail)):
+        answer.append(fail[i][0]);
+    return answer
