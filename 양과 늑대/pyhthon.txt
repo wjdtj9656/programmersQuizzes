@@ -1,0 +1,24 @@
+def solution(info, edges):
+    answer = 0
+    def build_tree(info,edges):
+        tree = [[] for _ in range(len(info))]
+        for edge in edges:
+            tree[edge[0]].append(edge[1])
+        return tree
+    tree = build_tree(info,edges)
+    res = 0
+    
+    q =[(0,1,0,set())]
+    
+    while q:
+        cur,sheep,wolf,visit = q.pop(0)
+        res = max(res, sheep)
+        visit.update(tree[cur])
+        
+        for next in visit:
+            if info[next]:
+                if sheep > wolf+1:
+                    q.append((next,sheep,wolf+1,visit-{next}))
+            else:
+                q.append((next,sheep+1,wolf,visit-{next}))
+    return res
