@@ -1,0 +1,38 @@
+	function solution(n, k, cmd) {
+		var answer = '';
+	    const up = [...new Array(n)].map((_,i)=>i-1);
+        const down = [...new Array(n)].map((_,i)=>i+1);
+        const delArr = [];
+        for(let i=0; i<cmd.length; i++){
+            let now = cmd[i][0];
+            if(now == "C"){
+                delArr.push(k);
+                up[down[k]] = up[k];
+                down[up[k]] = down[k];
+                k = n == down[k]? up[k] : down[k];
+            }
+            else if(now =="Z"){
+                const save = delArr.pop();
+                down[up[save]] = save;
+                up[down[save]] = save;
+            }
+            else{
+                const [action, num] = cmd[i].split(" ");
+                if(action == "U"){
+                    for(let j=0; j<num; j++){
+                        k = up[k];
+                    }
+                }
+                else{
+                    for(let j=0; j<num; j++){
+                        k = down[k];
+                    }
+                }
+            }
+        }
+        const ans = new Array(n).fill("O");
+        for(let i=0; i<delArr.length; i++){
+            ans[delArr[i]] = "X";
+        }
+		return ans.join("");
+	}
