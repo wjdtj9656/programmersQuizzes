@@ -1,0 +1,33 @@
+function solution(info, edges) {
+    var answer = 0;
+    const tree = new Array(info.length).fill(null).map(()=>[]);
+    
+    for(let edge of edges){
+        tree[edge[0]].push(edge[1]);
+    }
+    const q =[[0,1,0,new Set()]];
+    let res = 1;
+    while(q.length){
+        const [cur, sheep, wolf, visit] = q.pop();
+        
+        res = Math.max(res, sheep);
+        for(const next of tree[cur]){
+            visit.add(next);
+        }
+        for(const next of visit){
+            if(info[next]){
+                if(sheep !== wolf+1){
+                    const newVisit = new Set(visit);
+                    newVisit.delete(next);
+                    q.push([next, sheep, wolf+1, newVisit]);
+                }
+            }
+            else{
+                const newVisit = new Set(visit);
+                newVisit.delete(next);
+                q.push([next, sheep+1, wolf, newVisit]);
+            }
+        }
+    }
+    return res;
+}
