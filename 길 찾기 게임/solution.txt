@@ -1,0 +1,70 @@
+function solution(nodeinfo) {
+    let answer = 0;
+    class Node{
+        constructor(nodeinfo,num,left=null,right=null){
+            this.nodeinfo = nodeinfo
+            this.num = num;
+            this.left = left;
+            this.right = right;
+        }
+        hasLeft(){
+            return this.left !== null;
+        }
+        hasRight(node){
+            return this.right !== null;
+        }
+    }
+    const nodes = new Array(nodeinfo.length).fill(0).map((_,index)=>[nodeinfo[index][0],nodeinfo[index][1],index+1])
+    nodes.sort((a,b)=>{
+        if(a[1] == b[1]){
+            return a[0] - b[0];
+        }
+        return b[1] - a[1];
+    });
+    let root = null;
+    for(let i=0; i<nodes.length; i++){
+        if(!root){
+            root = new Node(nodes[i], nodes[i][2]);
+        }
+        else{
+            let parent = root;
+            const newNode = new Node(nodes[i],nodes[i][2]);
+            while(true){
+                if(nodes[i][0] < parent.nodeinfo[0]){
+                    if(parent.hasLeft()){
+                        parent = parent.left;
+                        continue;
+                    }
+                    parent.left = newNode;
+                    break;
+                }
+                else{
+                    if(parent.hasRight()){
+                        parent = parent.right;
+                        continue;
+                    }
+                    parent.right = newNode;
+                    break;
+                }
+            }
+        }
+    }
+    const res = [];
+    const ans1 = [];
+    const ans2 = [];
+    const preOrder = (node) => {
+        if(!node) return;
+        ans1.push(node.num);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+    preOrder(root);
+    const postOrder = (node) => {
+        if(!node) return;
+        postOrder(node.left);
+        postOrder(node.right);
+        ans2.push(node.num);
+    }
+    postOrder(root);
+    return [ans1,ans2];
+}
