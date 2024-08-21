@@ -1,0 +1,6 @@
+	function solution(nums) {
+		var answer = 0;
+		var num = nums.length/2>>0;
+		const set = new Set(nums);
+		return set.size >= num? num : set.size;
+	}
