@@ -1,0 +1,26 @@
+function solution(board) {
+    var answer = Infinity;
+    const dx = [0,-1,0,1];
+    const dy = [-1,0,1,0];
+    const m = board.length;
+    const q = [[0,0,-1,0]];
+    const visit = new Array(m).fill(0).map(()=>new Array(m).fill(0).map(()=>new Array(4).fill(0)));
+    while(q.length){
+        const [cx,cy,dir,cost] = q.pop()
+        for(let i=0; i<4; i++){
+            const nx = cx + dx[i];
+            const ny = cy + dy[i];
+            const nCost = ((dir == -1) || (dir-i)%2===0)? cost+100:cost+600;
+            if(nx < 0 || ny < 0 || nx>=m || ny>=m || board[nx][ny] == 1 || (nx ===0 && ny === 0) ||(visit[nx][ny][i] !== 0 && visit[nx][ny][i] <= nCost)) continue;
+            if(nx === m-1 && ny === m-1){
+                answer = Math.min(answer,nCost);
+            }
+            else{
+                q.push([nx,ny,i,nCost]);
+                visit[nx][ny][i] = nCost;
+            }
+        }
+        
+    }
+    return answer;
+}
