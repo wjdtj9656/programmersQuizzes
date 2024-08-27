@@ -1,0 +1,55 @@
+function solution(k, n, reqs) {
+    var answer = Infinity;
+    let arr = [];
+    const creatArr = (now) =>{
+        let index = 0;
+        if(now.length == k){
+            let sum = now.reduce((a,b)=>a+b,0);
+            if(sum !== n) return;
+            arr.push(now);
+            return;
+        }
+        for(let i=1; i<n; i++){
+            creatArr([...now,i]);
+        }
+    }
+    if(k==1){
+        arr.push(n);
+    }
+    else{
+        creatArr([]);
+    }
+    for(let tc=0; tc<arr.length; tc++){
+        let res = 0
+        const type = new Array(k).fill(0).map(()=>[]); 
+        for(let req=0; req<reqs.length; req++){  
+            let [a,b,c] = reqs[req];
+            c-=1;
+            if(type[c].length < arr[tc][c]){
+                type[c].push(a+b);
+            }
+            else{
+                let save = Infinity;
+                let index = 0;
+                for(let i=0; i<type[c].length; i++){
+                    if(save > type[c][i]){
+                        save = type[c][i];
+                        index = i;
+                    }
+                }
+                let sum = 0;
+                if(type[c][index] > a) {
+                    res += (type[c][index] - a);
+                    sum = type[c][index] + b;
+                }
+                else{
+                    sum = a+b;
+                }
+                type[c].splice(index,1);
+                type[c].push(sum);
+            }
+        }
+        answer = Math.min(answer,res);
+    }
+    return answer;
+}
