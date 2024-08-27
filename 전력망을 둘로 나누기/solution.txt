@@ -1,0 +1,41 @@
+function solution(n, wires) {
+    let answer = Infinity;
+    let arr = [];
+    const creatArr = () =>{
+        for(let i=0;i<n; i++){
+            arr[i] = i;
+        }
+    }
+    const find =(x) =>{
+        if(x == arr[x]) return x;
+        return find(arr[x]);
+    }
+    const union = (a,b) =>{
+        let a1 = find(a);
+        let b1 = find(b);
+        if(a1 == b1) return;
+        if(a1 > b1){
+            arr[a1] = b1;
+        }
+        else{
+            arr[b1] = a1;
+        }
+    }
+    for(let i=0; i<wires.length; i++){
+        creatArr();
+        for(let j=0; j<wires.length; j++){
+            if(i==j) continue;
+             const [a,b] = wires[j];
+            union(a-1,b-1);
+        }
+        const total = {};
+        let max = 0;
+        for(let j=0; j<n; j++){
+            if(!total[find(arr[j])]) total[find(arr[j])] = 0;
+            total[find(arr[j])]++;
+        }
+        res = Object.values(total);
+        answer = Math.min(answer,Math.abs(res[0] - res[1]));
+    }
+    return answer;
+}
